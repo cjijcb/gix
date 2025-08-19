@@ -1,8 +1,8 @@
 #!/bin/bash
-NC='\033[0m'
-H_GREEN='\033[1;32m'
-L_YELLOW='\033[0;33m'
-H_BLUE='\033[1;34m'
+NC="\[\033[0m\]"
+H_GREEN="\[\033[1;32m\]"
+L_YELLOW="\[\033[0;33m\]"
+H_BLUE="\[\033[1;34m\]"
 
 LP="$L_YELLOW($NC"   # Left parenthesis with yellow color
 RP="$L_YELLOW)$NC"   # Right parenthesis with yellow color
