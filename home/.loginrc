@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-  echo "usage: source .loginrc"
+  echo "Usage: source .loginrc"
   return 1
 fi
 
