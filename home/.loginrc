@@ -8,7 +8,7 @@ fi
 (
   set -xe
   gpg --batch --yes -o cji.tar.gz -d cji.tar.gz.gpg
-  tar --overwrite -vxzf cji.tar.gz
+  tar --keep-newer-files -vxpzf cji.tar.gz
   shred -vzuf cji.tar.gz
 ) || return
 
