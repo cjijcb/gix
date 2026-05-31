@@ -8,9 +8,9 @@ fi
 (
   set -xe
   gpg --batch --yes -o cji.tar.gz -d cji.tar.gz.gpg
-  tar --keep-newer-files -vxpzf cji.tar.gz
+  tar --skip-old-files  -vxpzf cji.tar.gz
   shred -vzuf cji.tar.gz
-) || return
+)
 
 cd cji/
 source .bashrc
