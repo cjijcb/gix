@@ -12,5 +12,7 @@ fi
   shred -vzuf cji.tar.gz
 )
 
+[[ $? -ne 0 ]] && return 1 
+
 cd cji/
 source .bashrc
