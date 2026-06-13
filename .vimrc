@@ -12,10 +12,12 @@ set background=dark
 set cursorline cursorlineopt=number
 set number
 
+" Key Mappings
 let mapleader = " "
 nnoremap <silent> <leader>n <Cmd>set number!<CR>
 nnoremap <silent> <leader>l <Cmd>set list!<CR>
 nnoremap <silent> <leader>h <Cmd>nohlsearch<CR>
+nnoremap <leader>v <C-v>
 
 " Indentation
 set tabstop=4
