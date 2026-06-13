@@ -11,7 +11,7 @@ jobs:
 
     env:
       GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
-      GIST_SYNC_CONFIG: .github/gist-sync.yml
+      GIST_SYNC_CONFIG: .github/config/gists.yml
 
     steps:
       - name: Checkout repository
