@@ -1,21 +1,50 @@
 " General
 if has('syntax')
-  syntax on
+  syntax enable
 endif
-
-set linebreak
-set breakindent
-set autoindent
-set expandtab
-set background=dark
 
 if exists('+fixendofline')
   set nofixendofline
 endif
 
-" Tabs
+set timeoutlen=300
+set background=dark
+set cursorline cursorlineopt=number
+set number
+
+let mapleader = " "
+nnoremap <silent> <leader>n <Cmd>set number!<CR>
+nnoremap <silent> <leader>l <Cmd>set list!<CR>
+nnoremap <silent> <leader>h <Cmd>nohlsearch<CR>
+
+" Indentation
 set tabstop=4
 set shiftwidth=4
+set softtabstop=4
+set expandtab
+set autoindent
+
+" Wrapping
+set linebreak
+set breakindent
+
+" Editing
+set backspace=indent,eol,start
+set hidden
+
+" Scrolling
+set scrolloff=10
+set sidescrolloff=5
+
+" Splits
+set splitbelow
+set splitright
+
+" Search
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
 
 " Input
 set mouse=nic
@@ -27,21 +56,32 @@ if has('clipboard')
   set clipboard^=unnamed,unnamedplus
 endif
 
-" Colorscheme
-let s:dir  = expand('~/.vim/colors')
-let s:file = s:dir . '/one.vim'
-let s:url  = 'https://raw.githubusercontent.com/rakr/vim-one/master/colors/one.vim'
+" Persistent undo
+if has('persistent_undo')
+  set undofile
+  set undodir=~/.vim/undo//
+  call mkdir(expand('~/.vim/undo'), 'p')
+endif
 
-if !filereadable(s:file) && executable('curl')
-  call mkdir(s:dir, 'p')
-  call system('curl -fsSL ' . shellescape(s:url) . ' -o ' . shellescape(s:file))
-  if v:shell_error
-    call delete(s:file)
+" Colorscheme
+let s:scheme = 'PaperColor'
+let s:dir  = expand('~/.vim/colors')
+let s:file = s:dir . '/' . s:scheme . '.vim'
+
+if !filereadable(s:file)
+  let s:url_base = 'https://raw.githubusercontent.com'
+  let s:url_path = '/NLKNguyen/papercolor-theme/master/colors/'
+  let s:url      = s:url_base . s:url_path . s:scheme . '.vim'
+
+  if executable('curl')
+    call mkdir(s:dir, 'p')
+    call system('curl -fsSL ' . shellescape(s:url) . ' -o ' . shellescape(s:file))
+    if v:shell_error | call delete(s:file) | endif
   endif
 endif
 
 try
-  colorscheme one
+  execute 'colorscheme' s:scheme
 catch
   silent! colorscheme habamax
 endtry
