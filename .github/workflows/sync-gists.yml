@@ -44,9 +44,10 @@ jobs:
             gist_id = file["gist_id"]
             gist_filename = file["gist_filename"]
 
-            unless File.exist?(repo_file)
-              abort "File not found: #{repo_file}"
-            end
+          unless File.exist?(repo_file)
+            puts "Skipping missing file: #{repo_file}"
+            next
+          end
 
             content = File.read(repo_file)
 
