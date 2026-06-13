@@ -1,0 +1,88 @@
+name: Sync Files to Gists
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  sync-gists:
+    runs-on: ubuntu-latest
+
+    env:
+      GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
+      GIST_SYNC_CONFIG: .github/gist-sync.yml
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+
+      - name: Sync files to Gists
+        shell: ruby {0}
+        run: |
+          require "json"
+          require "net/http"
+          require "uri"
+          require "yaml"
+
+          token = ENV.fetch("GIST_TOKEN")
+          config_path = ENV.fetch("GIST_SYNC_CONFIG")
+
+          unless File.exist?(config_path)
+            abort "Config file not found: #{config_path}"
+          end
+
+          config = YAML.load_file(config_path)
+
+          config["files"].each do |file|
+            repo_file = file["repo_file"]
+            gist_id = file["gist_id"]
+            gist_filename = file["gist_filename"]
+
+            unless File.exist?(repo_file)
+              abort "File not found: #{repo_file}"
+            end
+
+            content = File.read(repo_file)
+
+            uri = URI("https://api.github.com/gists/#{gist_id}")
+
+            body = {
+              files: {
+                gist_filename => {
+                  content: content
+                }
+              }
+            }
+
+            request = Net::HTTP::Patch.new(uri)
+            request["Authorization"] = "Bearer #{token}"
+            request["Accept"] = "application/vnd.github+json"
+            request["X-GitHub-Api-Version"] = "2022-11-28"
+            request["Content-Type"] = "application/json"
+            request.body = JSON.generate(body)
+
+            response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+              http.request(request)
+            end
+
+            unless response.is_a?(Net::HTTPSuccess)
+              puts "Failed syncing #{repo_file}"
+              puts "Status: #{response.code}"
+              puts response.body
+              exit 1
+            end
+
+            puts "Synced #{repo_file} to Gist #{gist_id} as #{gist_filename}"
+          end
+
+          puts "All files synced successfully."
+
+          abort "FAIL: HTTP #{res.code}\n#{res.body}" unless res.code == "200"
+          puts "Done: #{JSON.parse(res.body)['html_url']}"
+          RUBY
