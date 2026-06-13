@@ -1,4 +1,6 @@
 " General
+set runtimepath+=~/.vim
+
 if has('syntax')
   syntax enable
 endif
@@ -51,7 +53,6 @@ set hlsearch
 " Input
 set mouse=nic
 set selectmode=
-set pastetoggle=<F2>
 
 " Clipboard
 if has('clipboard')
