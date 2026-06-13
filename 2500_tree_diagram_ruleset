@@ -1,0 +1,256 @@
+2500 Tree Diagram Ruleset
+=========================
+
+Illustrates tree-like architecture or workflow diagram in Unicode characters.
+
+
+Structure
+---------
+
+1. Use [ ] for major components, services, resources, or logical containers.
+
+   ├─ [ Component ]
+   ├─ [ Service ]
+   └─ [ Database ]
+
+2. Use ├─, └─, and │ to nest child components under parent components
+   for hierarchy, ownership, or containment.
+
+   [ Parent Component ]
+    ├─ [ Child Component A ]
+    └─ [ Child Component B ]
+
+3. Use < > for placeholders, omitted items, repeated patterns, or variable names.
+
+   ├─ Name: < component name >
+   ├─ Type: <>
+   └─ < other components >
+
+4. Do not bracket small details.
+
+   Brackets are only for major components.
+
+   Good:
+   ├─ [ API Service ]
+   │   └─ Runtime: container
+
+   Avoid:
+   ├─ [ API Service ]
+   │   └─ [ Runtime: container ]
+
+
+Content
+-------
+
+5. Use key-value lines for attributes.
+
+   ├─ Key: value
+
+   Examples:
+   ├─ Name: gear.go
+   ├─ Version: 3.12
+   ├─ Type: <>
+   └─ Role: <>
+
+6. Use numbered action lines when sequence matters.
+
+   ├─ (1) Action name: optional summary
+   ├─ (2) Action name: optional summary
+   └─ (3) Action name: optional summary
+
+   Numbers show order, not unique IDs.
+   Repeat a number for simultaneous actions.
+
+7. Use bullet lines for action details.
+
+   Place details under the related action.
+
+   ├─ (1) Action name: optional summary
+   │     * detail
+   │     * detail
+
+
+Relationships
+-------------
+
+8. Use a Links section for relationships between components.
+
+   Place Links under the nearest common parent.
+
+   ├─ Links:
+   │  ├─ [ Source Component A ]
+   │  │  --> [ Target Component A ]: relationship
+   │  │
+   │  └─ [ Source Component B ]
+   │     <-> [ Target Component B ]: relationship
+
+   Use --> for one-way relationships.
+   Use <-> for two-way relationships.
+
+9. Stack target components under common source component in Links.
+
+   ├─ Links:
+   │  └─ [ Source Component ]
+   │     --> [ Target Componet A ]: relationship
+   │     <-> [ Target Componet B ]: relationship
+
+
+Style
+-----
+
+10. Keep one idea per line.
+
+11. Prefer clarity over completeness.
+
+12. Include only details that serve the diagram's purpose.
+
+
+Template
+--------
+
+2500 Tree Diagram Ruleset
+=========================
+
+Illustrates tree-like architecture or workflow diagram in Unicode characters.
+
+
+Structure
+---------
+
+1. Use [ ] for major components, services, resources, or logical containers.
+
+   ├─ [ Component ]
+   ├─ [ Service ]
+   └─ [ Database ]
+
+2. Use ├─, └─, and │ to nest child components under parent components
+   for hierarchy, ownership, or containment.
+
+   [ Parent Component ]
+    ├─ [ Child Component A ]
+    └─ [ Child Component B ]
+
+3. Use < > for placeholders, omitted items, repeated patterns, or variable names.
+
+   ├─ Name: < component name >
+   ├─ Type: <>
+   └─ < other components >
+
+4. Do not bracket small details.
+
+   Brackets are only for major components.
+
+   Good:
+   ├─ [ API Service ]
+   │   └─ Runtime: container
+
+   Avoid:
+   ├─ [ API Service ]
+   │   └─ [ Runtime: container ]
+
+
+Content
+-------
+
+5. Use key-value lines for attributes.
+
+   ├─ Key: value
+
+   Examples:
+   ├─ Name: gear.go
+   ├─ Version: 3.12
+   ├─ Type: <>
+   └─ Role: <>
+
+6. Use numbered action lines when sequence matters.
+
+   ├─ (1) Action name: optional summary
+   ├─ (2) Action name: optional summary
+   └─ (3) Action name: optional summary
+
+   Numbers show order, not unique IDs.
+   Repeat a number for simultaneous actions.
+
+7. Use bullet lines for action details.
+
+   Place details under the related action.
+
+   ├─ (1) Action name: optional summary
+   │     * detail
+   │     * detail
+
+
+Relationships
+-------------
+
+8. Use a Links section for relationships between components.
+
+   Place Links under the nearest common parent.
+
+   ├─ Links:
+   │  ├─ [ Source Component A ]
+   │  │  --> [ Target Component A ]: relationship
+   │  │
+   │  └─ [ Source Component B ]
+   │     <-> [ Target Component B ]: relationship
+
+   Use --> for one-way relationships.
+   Use <-> for two-way relationships.
+
+9. Stack target components under common source component in Links.
+
+   ├─ Links:
+   │  └─ [ Source Component ]
+   │      --> [ Target Componet A ]: relationship
+   │      <-> [ Target Componet B ]: relationship
+
+
+Style
+-----
+
+10. Keep one idea per line.
+
+11. Prefer clarity over completeness.
+
+12. Include only details that serve the diagram's purpose.
+
+
+Template
+--------
+
+[ Root Component ]
+ ├─ Name: optional-name
+ ├─ < other attributes >
+ │
+ ├─ [ Parent Component A ]
+ │   ├─ Role: optional-role
+ │   ├─ < other attributes >
+ │   │
+ │   ├─ (1) Action name: optional summary
+ │   │     * action detail
+ │   │     * action detail
+ │   │
+ │   ├─ [ Child Component A ]
+ │   └─ [ Child Component B ]
+ │       └─ < other attributes or actions >
+ │
+ ├─ [ Parent Component B ]
+ │   ├─ Role: optional-role
+ │   └─ < other attributes or actions >
+ │
+ ├─ Links:
+ │  ├─ [ Child Component A ]
+ │  │  --> [ Parent Component B ]: relationship
+ │  │
+ │  └─ [ Parent Component A ]
+ │     --> [ Parent Component B ]: relationship                              
+ │     <-> [ Root Component ]: relationship
+ │
+ └─ < other components >
+
+Legend:
+[ ] = component
+(n) = action
+--> = one-way relationship
+<-> = two-way relationship
+< > = placeholder
