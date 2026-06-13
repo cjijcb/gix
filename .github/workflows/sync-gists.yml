@@ -39,7 +39,54 @@ jobs:
 
           config = YAML.load_file(config_path)
 
+          def github_request(uri, token, request)
+            request["Authorization"] = "Bearer #{token}"
+            request["Accept"] = "application/vnd.github+json"
+            request["X-GitHub-Api-Version"] = "2022-11-28"
+            request["Content-Type"] = "application/json"
+
+            Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+              http.request(request)
+            end
+          end
+
+          def get_gist_file_content(gist_id, gist_filename, token)
+            uri = URI("https://api.github.com/gists/#{gist_id}")
+            request = Net::HTTP::Get.new(uri)
+
+            response = github_request(uri, token, request)
+
+            unless response.is_a?(Net::HTTPSuccess)
+              abort "Failed fetching Gist #{gist_id}: HTTP #{response.code}\n#{response.body}"
+            end
+
+            gist = JSON.parse(response.body)
+            file = gist.dig("files", gist_filename)
+
+            return nil if file.nil?
+
+            file["content"]
+          end
+
+          def update_gist_file(gist_id, gist_filename, content, token)
+            uri = URI("https://api.github.com/gists/#{gist_id}")
+
+            body = {
+              files: {
+                gist_filename => {
+                  content: content
+                }
+              }
+            }
+
+            request = Net::HTTP::Patch.new(uri)
+            request.body = JSON.generate(body)
+
+            github_request(uri, token, request)
+          end
+
           synced_count = 0
+          unchanged_count = 0
           skipped_count = 0
 
           config["files"].each do |file|
@@ -53,28 +100,25 @@ jobs:
               next
             end
 
-            content = File.read(repo_file)
+            repo_content = File.read(repo_file)
 
-            uri = URI("https://api.github.com/gists/#{gist_id}")
+            puts "Checking #{repo_file} against Gist #{gist_id} as #{gist_filename}..."
 
-            body = {
-              files: {
-                gist_filename => {
-                  content: content
-                }
-              }
-            }
+            gist_content = get_gist_file_content(gist_id, gist_filename, token)
 
-            request = Net::HTTP::Patch.new(uri)
-            request["Authorization"] = "Bearer #{token}"
-            request["Accept"] = "application/vnd.github+json"
-            request["X-GitHub-Api-Version"] = "2022-11-28"
-            request["Content-Type"] = "application/json"
-            request.body = JSON.generate(body)
-
-            response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
-              http.request(request)
+            if gist_content == repo_content
+              puts "No changes for #{repo_file}; skipping update."
+              unchanged_count += 1
+              next
             end
+
+            if gist_content.nil?
+              puts "Gist file #{gist_filename} does not exist yet; creating it."
+            else
+              puts "Changes detected for #{repo_file}; updating Gist."
+            end
+
+            response = update_gist_file(gist_id, gist_filename, repo_content, token)
 
             unless response.is_a?(Net::HTTPSuccess)
               puts "Failed syncing #{repo_file}"
@@ -88,5 +132,6 @@ jobs:
           end
 
           puts "Sync complete."
-          puts "Synced files: #{synced_count}"
+          puts "Updated files: #{synced_count}"
+          puts "Unchanged files: #{unchanged_count}"
           puts "Skipped missing files: #{skipped_count}"
