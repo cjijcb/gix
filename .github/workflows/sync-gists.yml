@@ -39,15 +39,19 @@ jobs:
 
           config = YAML.load_file(config_path)
 
+          synced_count = 0
+          skipped_count = 0
+
           config["files"].each do |file|
             repo_file = file["repo_file"]
             gist_id = file["gist_id"]
             gist_filename = file["gist_filename"]
 
-          unless File.exist?(repo_file)
-            puts "Skipping missing file: #{repo_file}"
-            next
-          end
+            unless File.exist?(repo_file)
+              puts "Skipping missing file: #{repo_file}"
+              skipped_count += 1
+              next
+            end
 
             content = File.read(repo_file)
 
@@ -79,11 +83,11 @@ jobs:
               exit 1
             end
 
+            synced_count += 1
             puts "Synced #{repo_file} to Gist #{gist_id} as #{gist_filename}"
           end
 
-          puts "All files synced successfully."
-
-          abort "FAIL: HTTP #{res.code}\n#{res.body}" unless res.code == "200"
-          puts "Done: #{JSON.parse(res.body)['html_url']}"
+          puts "Sync complete."
+          puts "Synced files: #{synced_count}"
+          puts "Skipped missing files: #{skipped_count}"
           RUBY
