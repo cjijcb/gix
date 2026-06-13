@@ -90,4 +90,3 @@ jobs:
           puts "Sync complete."
           puts "Synced files: #{synced_count}"
           puts "Skipped missing files: #{skipped_count}"
-          RUBY
