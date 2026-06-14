@@ -24,11 +24,19 @@ set number
 
 " Key Mapping
 let mapleader = " "
-nnoremap <silent> <leader>n <Cmd>set number!<CR>
-nnoremap <silent> <leader>l <Cmd>set list!<CR>
-nnoremap <silent> <leader>h <Cmd>nohlsearch<CR>
-nnoremap <silent> <leader>p <Cmd>%print<CR>
-nnoremap <silent> <leader>v <C-v>
+
+if has('nvim')
+  nnoremap <silent><leader>t <Cmd>botright 7split<Bar>terminal<CR>
+else
+  nnoremap <silent><leader>t <Cmd>botright terminal ++rows=7<CR>
+endif
+
+nnoremap <silent><leader>n <Cmd>set number!<CR>
+nnoremap <silent><leader>l <Cmd>set list!<CR>
+nnoremap <silent><leader>h <Cmd>nohlsearch<CR>
+nnoremap <silent><leader>p <Cmd>%print<CR>
+nnoremap <silent><leader>d <Cmd>%delete<CR>
+nnoremap <silent><leader>v <C-v>
 
 " Indentation
 set tabstop=4
