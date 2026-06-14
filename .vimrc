@@ -1,25 +1,34 @@
 " General
-set runtimepath+=~/.vim
+set runtimepath^=~/.vim
 
 if has('syntax')
   syntax enable
+endif
+
+if exists('+termguicolors')
+  set termguicolors
+endif
+
+if exists('+t_Co')
+  set t_Co=256
 endif
 
 if exists('+fixendofline')
   set nofixendofline
 endif
 
-set timeoutlen=300
+set timeoutlen=500
 set background=dark
 set cursorline cursorlineopt=number
 set number
 
-" Key Mappings
+" Key Mapping
 let mapleader = " "
 nnoremap <silent> <leader>n <Cmd>set number!<CR>
 nnoremap <silent> <leader>l <Cmd>set list!<CR>
 nnoremap <silent> <leader>h <Cmd>nohlsearch<CR>
-nnoremap <leader>v <C-v>
+nnoremap <silent> <leader>p <Cmd>%print<CR>
+nnoremap <silent> <leader>v <C-v>
 
 " Indentation
 set tabstop=4
@@ -51,7 +60,7 @@ set incsearch
 set hlsearch
 
 " Input
-set mouse=nic
+set mouse=a
 set selectmode=
 
 " Clipboard
