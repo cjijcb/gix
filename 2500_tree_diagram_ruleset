@@ -9,9 +9,9 @@ Structure
 
 1. Use [ ] for major components, services, resources, or logical containers.
 
-   ├─ [ Component ]
-   ├─ [ Service ]
-   └─ [ Database ]
+   ├─ [ Component A ]
+   ├─ [ Component B ]
+   └─ [ Component C ]
 
 2. Use ├─, └─, and │ to nest child components under parent components
    for hierarchy, ownership, or containment.
@@ -19,6 +19,8 @@ Structure
    [ Parent Component ]
     ├─ [ Child Component A ]
     └─ [ Child Component B ]
+
+   Nesting already shows basic parent-child relationships.
 
 3. Use < > for placeholders, omitted items, repeated patterns, or variable names.
 
@@ -31,12 +33,12 @@ Structure
    Brackets are only for major components.
 
    Good:
-   ├─ [ API Service ]
-   │   └─ Runtime: container
+   ├─ [ Component A ]
+   │   └─ Color: blue
 
    Avoid:
-   ├─ [ API Service ]
-   │   └─ [ Runtime: container ]
+   ├─ [ Component A ]
+   │   └─ [ Color: blue ]
 
 
 Content
@@ -47,144 +49,52 @@ Content
    ├─ Key: value
 
    Examples:
-   ├─ Name: gear.go
-   ├─ Version: 3.12
+   ├─ Name: item-one
+   ├─ Size: medium
    ├─ Type: <>
    └─ Role: <>
 
 6. Use numbered action lines when sequence matters.
 
-   ├─ (1) Action name: optional summary
-   ├─ (2) Action name: optional summary
-   └─ (3) Action name: optional summary
+   ├─ (1) Action made: optional summary
+   ├─ (2) Action made: optional summary
+   ├─ (3a) Action made: optional summary
+   └─ (3b) Action made: optional summary
 
-   Numbers show order, not unique IDs.
-   Repeat a number for simultaneous actions.
+   Repeat a number with a letter suffix for simultaneous actions.
 
-7. Use bullet lines for action details.
+7. Place actions under the closest component where the action was made.
 
-   Place details under the related action.
-
-   ├─ (1) Action name: optional summary
-   │     * detail
-   │     * detail
-
-
-Relationships
--------------
-
-8. Use a Links section for relationships between components.
-
-   Place Links under the nearest common parent.
-
-   ├─ Links:
-   │  ├─ [ Source Component A ]
-   │  │  --> [ Target Component A ]: relationship
-   │  │
-   │  └─ [ Source Component B ]
-   │     <-> [ Target Component B ]: relationship
-
-   Use --> for one-way relationships.
-   Use <-> for two-way relationships.
-
-9. Stack target components under common source component in Links.
-
-   ├─ Links:
-   │  └─ [ Source Component ]
-   │     --> [ Target Componet A ]: relationship
-   │     <-> [ Target Componet B ]: relationship
-
-
-Style
------
-
-10. Keep one idea per line.
-
-11. Prefer clarity over completeness.
-
-12. Include only details that serve the diagram's purpose.
-
-
-Template
---------
-
-2500 Tree Diagram Ruleset
-=========================
-
-Illustrates tree-like architecture or workflow diagram in Unicode characters.
-
-
-Structure
----------
-
-1. Use [ ] for major components, services, resources, or logical containers.
-
-   ├─ [ Component ]
-   ├─ [ Service ]
-   └─ [ Database ]
-
-2. Use ├─, └─, and │ to nest child components under parent components
-   for hierarchy, ownership, or containment.
-
-   [ Parent Component ]
-    ├─ [ Child Component A ]
-    └─ [ Child Component B ]
-
-3. Use < > for placeholders, omitted items, repeated patterns, or variable names.
-
-   ├─ Name: < component name >
-   ├─ Type: <>
-   └─ < other components >
-
-4. Do not bracket small details.
-
-   Brackets are only for major components.
+   Actions belong to the component that performs or owns them.
 
    Good:
-   ├─ [ API Service ]
-   │   └─ Runtime: container
+   ├─ [ Sender ]
+   │   └─ (1) Sends a request
+   │
+   └─ [ Receiver ]
 
    Avoid:
-   ├─ [ API Service ]
-   │   └─ [ Runtime: container ]
+   ├─ [ Sender ]
+   │
+   ├─ (1) Sends a request
+   │
+   └─ [ Receiver ]
 
-
-Content
--------
-
-5. Use key-value lines for attributes.
-
-   ├─ Key: value
-
-   Examples:
-   ├─ Name: gear.go
-   ├─ Version: 3.12
-   ├─ Type: <>
-   └─ Role: <>
-
-6. Use numbered action lines when sequence matters.
-
-   ├─ (1) Action name: optional summary
-   ├─ (2) Action name: optional summary
-   └─ (3) Action name: optional summary
-
-   Numbers show order, not unique IDs.
-   Repeat a number for simultaneous actions.
-
-7. Use bullet lines for action details.
+8. Use bullet lines for action details.
 
    Place details under the related action.
 
-   ├─ (1) Action name: optional summary
-   │     * detail
-   │     * detail
+   ├─ (1) Action made: optional summary
+   │     * action detail
+   │     * action detail
 
 
 Relationships
 -------------
 
-8. Use a Links section for relationships between components.
+9. Use a Links section for relationships between components.
 
+   Use Links when nesting is not enough to show the relationship.
    Place Links under the nearest common parent.
 
    ├─ Links:
@@ -197,22 +107,22 @@ Relationships
    Use --> for one-way relationships.
    Use <-> for two-way relationships.
 
-9. Stack target components under common source component in Links.
+10. Stack target components under common source component in Links.
 
    ├─ Links:
    │  └─ [ Source Component ]
-   │      --> [ Target Componet A ]: relationship
-   │      <-> [ Target Componet B ]: relationship
+   │     --> [ Target Component A ]: relationship
+   │     <-> [ Target Component B ]: relationship
 
 
 Style
 -----
 
-10. Keep one idea per line.
+11. Keep one idea per line.
 
-11. Prefer clarity over completeness.
+12. Prefer clarity over completeness.
 
-12. Include only details that serve the diagram's purpose.
+13. Include only details that serve the diagram's purpose.
 
 
 Template
@@ -226,17 +136,23 @@ Template
  │   ├─ Role: optional-role
  │   ├─ < other attributes >
  │   │
- │   ├─ (1) Action name: optional summary
+ │   ├─ (1) Action made: optional summary
  │   │     * action detail
  │   │     * action detail
  │   │
  │   ├─ [ Child Component A ]
+ │   │   └─ < other attributes or actions >
+ │   │
  │   └─ [ Child Component B ]
- │       └─ < other attributes or actions >
+ │       ├─ < other attributes >
+ │       │
+ │       └─ (2a) Action made: optional summary
  │
  ├─ [ Parent Component B ]
  │   ├─ Role: optional-role
- │   └─ < other attributes or actions >
+ │   ├─ < other attributes >
+ │   │
+ │   └─ (2b) Action made: optional summary
  │
  ├─ Links:
  │  ├─ [ Child Component A ]
