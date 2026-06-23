@@ -22,7 +22,8 @@ Structure
 
    Nesting already shows basic parent-child relationships.
 
-3. Use < > for placeholders, omitted items, repeated patterns, or variable names.
+3. Use < > for placeholders, omitted items, repeated patterns,
+   or variable names.
 
    ├─ Name: < component name >
    ├─ Type: <>
@@ -56,10 +57,10 @@ Content
 
 6. Use numbered action lines when sequence matters.
 
-   ├─ (1) Action made: optional summary
-   ├─ (2) Action made: optional summary
-   ├─ (3a) Action made: optional summary
-   └─ (3b) Action made: optional summary
+   ├─ (1) Action made: optional-summary
+   ├─ (2) Action made: optional-summary
+   ├─ (3a) Action made: optional-summary
+   └─ (3b) Action made: optional-summary
 
    Repeat a number with a letter suffix for simultaneous actions.
 
@@ -84,9 +85,9 @@ Content
 
    Place details under the related action.
 
-   ├─ (1) Action made: optional summary
-   │     * action detail
-   │     * action detail
+   ├─ (1) Action made: optional-summary
+   │     * optional-detail
+   │     * optional-detail
 
 
 Relationships
@@ -136,9 +137,9 @@ Template
  │   ├─ Role: optional-role
  │   ├─ < other attributes >
  │   │
- │   ├─ (1) Action made: optional summary
- │   │     * action detail
- │   │     * action detail
+ │   ├─ (1) Action made: optional-summary
+ │   │     * optional-detail
+ │   │     * optional-detail
  │   │
  │   ├─ [ Child Component A ]
  │   │   └─ < other attributes or actions >
@@ -146,20 +147,20 @@ Template
  │   └─ [ Child Component B ]
  │       ├─ < other attributes >
  │       │
- │       └─ (2a) Action made: optional summary
+ │       └─ (2a) Action made: optional-summary
  │
  ├─ [ Parent Component B ]
  │   ├─ Role: optional-role
  │   ├─ < other attributes >
  │   │
- │   └─ (2b) Action made: optional summary
+ │   └─ (2b) Action made: optional-summary
  │
  ├─ Links:
  │  ├─ [ Child Component A ]
  │  │  --> [ Parent Component B ]: relationship
  │  │
  │  └─ [ Parent Component A ]
- │     --> [ Parent Component B ]: relationship                              
+ │     --> [ Parent Component B ]: relationship
  │     <-> [ Root Component ]: relationship
  │
  └─ < other components >
@@ -170,3 +171,4 @@ Legend:
 --> = one-way relationship
 <-> = two-way relationship
 < > = placeholder
+
