@@ -166,8 +166,8 @@ Template
         <-> [Root Component]: relationship
 
 Legend:
-[] = component
+[]  = component
 (n) = action
 --> = one-way relationship
 <-> = two-way relationship
-<> = placeholder
+<>  = placeholder
