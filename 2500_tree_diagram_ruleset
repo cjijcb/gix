@@ -98,22 +98,22 @@ Relationships
    Use Links when nesting is not enough to show the relationship.
    Place Links under the nearest common parent.
 
-   ├── Links:
-   │   ├── [Source Component A]
-   │   │   --> [Target Component A]: relationship
-   │   │
-   │   └── [Source Component B]
-   │       <-> [Target Component B]: relationship
+   └── Links:
+       ├── [Source Component A]
+       │   --> [Target Component A]: relationship
+       │
+       └── [Source Component B]
+           <-> [Target Component B]: relationship
 
    Use --> for one-way relationships.
    Use <-> for two-way relationships.
 
 10. Stack target components under common source component in Links.
 
-   ├── Links:
-   │   └── [Source Component]
-   │       --> [Target Component A]: relationship
-   │       <-> [Target Component B]: relationship
+   └── Links:
+       └── [Source Component]
+           --> [Target Component A]: relationship
+           <-> [Target Component B]: relationship
 
 
 Style
@@ -155,15 +155,15 @@ Template
 │   │
 │   └── (2b) Action made: optional-summary
 │
-├── Links:
-│   ├── [Child Component A]
-│   │   --> [Parent Component B]: relationship
-│   │
-│   └── [Parent Component A]
-│       --> [Parent Component B]: relationship
-│       <-> [Root Component]: relationship
+├── <other components>
 │
-└── <other components>
+└── Links:
+    ├── [Child Component A]
+    │   --> [Parent Component B]: relationship
+    │
+    └── [Parent Component A]
+        --> [Parent Component B]: relationship
+        <-> [Root Component]: relationship
 
 Legend:
 [] = component
