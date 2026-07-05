@@ -1,7 +1,7 @@
 files:
-  - repo_file: 2500_tree_diagram_ruleset
+  - repo_file: 2500_tree_diagram_guidelines
     gist_id: 2aedf957ff3b84236239e50feb999b77
-    gist_filename: 2500_tree_diagram_ruleset
+    gist_filename: 2500_tree_diagram_guidelines
 
   - repo_file: .vimrc
     gist_id: 0870d168b017a60241ad6911d6fc3150
