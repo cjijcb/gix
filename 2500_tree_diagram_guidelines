@@ -1,0 +1,173 @@
+2500 Tree Diagram Guidelines
+============================
+
+Illustrates tree-like architecture or workflow diagram in plain text.
+
+
+Structure
+---------
+
+1. Use [ ] for major components, services, resources, or logical containers.
+
+   ├── [Component A]
+   ├── [Component B]
+   └── [Component C]
+
+2. Use ├──, └──, and │ to nest child components under parent components
+   for hierarchy, ownership, or containment.
+
+   [Parent Component]
+   ├── [Child Component A]
+   └── [Child Component B]
+
+   Nesting already shows basic parent-child relationships.
+
+3. Use < > for placeholders, omitted items, repeated patterns,
+   or variable names.
+
+   ├── Name: <component name>
+   ├── Type: <>
+   └── <other components>
+
+4. Do not bracket small details.
+
+   Brackets are only for major components.
+
+   Good:
+   ├── [Component A]
+   │   └── Color: blue
+
+   Avoid:
+   ├── [Component A]
+   │   └── [Color: blue]
+
+
+Content
+-------
+
+5. Use key-value lines for attributes.
+
+   ├── Key: value
+
+   Examples:
+   ├── Name: item-one
+   ├── Size: medium
+   ├── Type: <>
+   └── Role: <>
+
+6. Use numbered action lines when sequence matters.
+
+   ├── (1) Action made: optional-summary
+   ├── (2) Action made: optional-summary
+   ├── (3a) Action made: optional-summary
+   └── (3b) Action made: optional-summary
+
+   Repeat a number with a letter suffix for simultaneous actions.
+
+7. Place actions under the closest component where the action was made.
+
+   Actions belong to the component that performs or owns them.
+
+   Good:
+   ├── [Sender]
+   │   └── (1) Sends a request
+   │
+   └── [Receiver]
+
+   Avoid:
+   ├── [Sender]
+   │
+   ├── (1) Sends a request
+   │
+   └── [Receiver]
+
+8. Use bullet lines for action details.
+
+   Place details under the related action.
+
+   ├── (1) Action made: optional-summary
+   │     * optional-detail
+   │     * optional-detail
+
+
+Relationships
+-------------
+
+9. Use a Links section for relationships between components.
+
+   Use Links when nesting is not enough to show the relationship.
+   Place Links under the nearest common parent.
+
+   └── Links:
+       ├── [Source Component A]
+       │   --> [Target Component A]: relationship
+       │
+       └── [Source Component B]
+           <-> [Target Component B]: relationship
+
+   Use --> for one-way relationships.
+   Use <-> for two-way relationships.
+
+10. Stack target components under common source component in Links.
+
+   └── Links:
+       └── [Source Component]
+           --> [Target Component A]: relationship
+           <-> [Target Component B]: relationship
+
+
+Style
+-----
+
+11. Keep one idea per line.
+
+12. Prefer clarity over completeness.
+
+13. Include only details that serve the diagram's purpose.
+
+
+Template
+--------
+
+[Root Component]
+├── Name: optional-name
+├── <other attributes>
+│
+├── [Parent Component A]
+│   ├── Role: optional-role
+│   ├── <other attributes>
+│   │
+│   ├── (1) Action made: optional-summary
+│   │     * optional-detail
+│   │     * optional-detail
+│   │
+│   ├── [Child Component A]
+│   │   └── <other attributes or actions>
+│   │
+│   └── [Child Component B]
+│       ├── <other attributes>
+│       │
+│       └── (2a) Action made: optional-summary
+│
+├── [Parent Component B]
+│   ├── Role: optional-role
+│   ├── <other attributes>
+│   │
+│   └── (2b) Action made: optional-summary
+│
+├── <other components>
+│
+└── Links:
+    ├── [Child Component A]
+    │   --> [Parent Component B]: relationship
+    │
+    └── [Parent Component A]
+        --> [Parent Component B]: relationship
+        <-> [Root Component]: relationship
+
+Legend:
+[]  = component
+(n) = action
+--> = one-way relationship
+<-> = two-way relationship
+<>  = placeholder
