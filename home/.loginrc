@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  echo "Usage: source .loginrc"
+  return 1
+fi
+
+(
+  set -xe
+  gpg --batch --yes -o cji.tar.gz -d cji.tar.gz.gpg
+  tar --skip-old-files  -vxpzf cji.tar.gz
+  shred -vzuf cji.tar.gz
+)
+
+[[ $? -ne 0 ]] && return 1 
+
+cd cji/
+source .bashrc
