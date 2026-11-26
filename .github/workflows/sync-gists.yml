@@ -1,0 +1,159 @@
+name: Sync Files to Gists
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  sync-gists:
+    runs-on: ubuntu-latest
+
+    env:
+      GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
+      GIST_SYNC_CONFIG: .github/config/gists.yml
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+
+      - name: Sync files to Gists
+        shell: ruby {0}
+        run: |
+          require "json"
+          require "net/http"
+          require "uri"
+          require "yaml"
+
+          token = ENV.fetch("GIST_TOKEN")
+          config_path = ENV.fetch("GIST_SYNC_CONFIG")
+
+          unless File.exist?(config_path)
+            abort "Config file not found: #{config_path}"
+          end
+
+          config = YAML.load_file(config_path)
+          files = config["files"] || []
+          abort "No files configured in #{config_path}" if files.empty?
+
+          # --- Reusable persistent connection ---
+
+          http = Net::HTTP.new("api.github.com", 443)
+          http.use_ssl = true
+          http.open_timeout = 10
+          http.read_timeout = 10
+
+          def github_request(http, path, token, request)
+            request["Authorization"] = "Bearer #{token}"
+            request["Accept"] = "application/vnd.github+json"
+            request["X-GitHub-Api-Version"] = "2022-11-28"
+            request["Content-Type"] = "application/json"
+            http.request(request)
+          end
+
+          # --- Fetch gist (with truncation handling) ---
+
+          def fetch_gist(http, gist_id, token)
+            path = "/gists/#{gist_id}"
+            request = Net::HTTP::Get.new(path)
+            response = github_request(http, path, token, request)
+
+            unless response.is_a?(Net::HTTPSuccess)
+              abort "Failed fetching Gist #{gist_id}: HTTP #{response.code}\n#{response.body}"
+            end
+
+            JSON.parse(response.body)
+          end
+
+          def get_gist_file_content(gist, gist_filename)
+            file = gist.dig("files", gist_filename)
+            return nil if file.nil?
+
+            if file["truncated"]
+              raw_uri = URI(file["raw_url"])
+              return Net::HTTP.get(raw_uri)
+            end
+
+            file["content"]
+          end
+
+          # --- Update gist ---
+
+          def update_gist_file(http, gist_id, gist_filename, content, token)
+            path = "/gists/#{gist_id}"
+
+            body = {
+              files: {
+                gist_filename => {
+                  content: content
+                }
+              }
+            }
+
+            request = Net::HTTP::Patch.new(path)
+            request.body = JSON.generate(body)
+
+            github_request(http, path, token, request)
+          end
+
+          # --- Main sync loop ---
+
+          synced_count = 0
+          unchanged_count = 0
+          skipped_count = 0
+          gist_cache = {}
+
+          http.start do
+            files.each do |file|
+              repo_file = file["repo_file"]
+              gist_id = file["gist_id"]
+              gist_filename = file["gist_filename"]
+
+              unless File.exist?(repo_file)
+                puts "Skipping missing file: #{repo_file}"
+                skipped_count += 1
+                next
+              end
+
+              repo_content = File.read(repo_file)
+
+              puts "Checking #{repo_file} against Gist #{gist_id} as #{gist_filename}..."
+
+              gist_cache[gist_id] ||= fetch_gist(http, gist_id, token)
+              gist_content = get_gist_file_content(gist_cache[gist_id], gist_filename)
+
+              if gist_content == repo_content
+                puts "No changes for #{repo_file}; skipping update."
+                unchanged_count += 1
+                next
+              end
+
+              if gist_content.nil?
+                puts "Gist file #{gist_filename} does not exist yet; creating it."
+              else
+                puts "Changes detected for #{repo_file}; updating Gist."
+              end
+
+              response = update_gist_file(http, gist_id, gist_filename, repo_content, token)
+
+              unless response.is_a?(Net::HTTPSuccess)
+                abort "Failed syncing #{repo_file}: HTTP #{response.code}\n#{response.body}"
+              end
+
+              # Invalidate cache so the next file targeting this gist sees fresh data
+              gist_cache.delete(gist_id)
+
+              synced_count += 1
+              puts "Synced #{repo_file} to Gist #{gist_id} as #{gist_filename}"
+            end
+          end
+
+          puts "Sync complete."
+          puts "Updated files: #{synced_count}"
+          puts "Unchanged files: #{unchanged_count}"
+          puts "Skipped missing files: #{skipped_count}"
